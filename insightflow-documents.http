@@ -1,0 +1,6 @@
+@insightflow_documents_HostAddress = http://localhost:5035
+
+GET {{insightflow_documents_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
