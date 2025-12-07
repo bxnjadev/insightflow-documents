@@ -40,7 +40,7 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
     [Route("/documents/{id}")]
     public ActionResult<DocumentResponse> Edit(string id)
     {
-        
+        return null;
     }
 
     [HttpDelete]
