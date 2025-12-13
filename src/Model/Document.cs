@@ -11,7 +11,7 @@ public class Document
 
     public string Icon { get; set; } = string.Empty;
 
-    public JsonElement Content { get; set; }
+    public string Content { get; set; } 
 
     public Guid WorkspaceId { get; set; } 
 

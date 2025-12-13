@@ -14,7 +14,7 @@ public class DocumentService : IDocumentService
         {
             Uuid = Guid.NewGuid(),
             Title = creationDocument.Title,
-            Content = new JsonElement(),
+            Content = "{}",
             Icon = creationDocument.Icon,
             WorkspaceId = creationDocument.WorkspaceId
         };
@@ -31,7 +31,6 @@ public class DocumentService : IDocumentService
         {
             if (document.Uuid == guid)
             {
-                
                 return document;
             }
         }
@@ -50,4 +49,19 @@ public class DocumentService : IDocumentService
         document.IsDeleted = true;
         return document;
     }
+
+    public Document? Edit(string uuid, EditDocument editDocument)
+    {
+        var document = Find(uuid);
+        if (document == null)
+        {
+            return null;
+        }
+
+        document.Icon = editDocument.Icon;
+        document.Content = editDocument.Content;
+        document.Title = editDocument.Title;
+        return document;
+    }
+    
 }

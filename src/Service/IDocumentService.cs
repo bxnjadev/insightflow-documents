@@ -11,4 +11,6 @@ public interface IDocumentService
     
     Document? Delete(string uuid);
 
+    Document? Edit(string uuid, EditDocument editDocument);
+
 }

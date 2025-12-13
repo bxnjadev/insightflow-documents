@@ -1,6 +1,7 @@
 ﻿using insightflow_documents.Mapper;
 using insightflow_documents.Model;
 using insightflow_documents.Service;
+using insightflow_documents.Util;
 using Microsoft.AspNetCore.Mvc;
 
 namespace insightflow_documents.Controllers;
@@ -44,9 +45,34 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
 
     [HttpPatch]
     [Route("/documents/{id}")]
-    public ActionResult<DocumentResponse> Edit(string id)
+    public ActionResult<DocumentResponse> Edit(string id,
+        EditDocument editDocument)
     {
-        return null;
+
+        var content = editDocument.Content;
+        if (content != "")
+        {
+            if (!JsonValidator.IsValidJson(content))
+            {
+                return BadRequest("El contenido no sigue el formato JSON");
+            }
+        }
+        
+        try
+        {
+            var editedDocument = documentService.Edit(id, editDocument);
+            if (editedDocument == null)
+            {
+                return NotFound("Document not found");
+            }
+
+            return Ok(editedDocument);
+        }
+        catch (FormatException e)
+        {
+            return BadRequest("The uuid format is not valid");
+        }
+        
     }
 
     [HttpDelete]
