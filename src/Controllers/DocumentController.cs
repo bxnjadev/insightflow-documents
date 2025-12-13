@@ -9,7 +9,6 @@ namespace insightflow_documents.Controllers;
 [Route("api/[controller]")]
 public class DocumentController(IDocumentService documentService) : ControllerBase
 {
-
     private readonly DocumentMapper _documentMapper = new DocumentMapper();
 
     [HttpPost]
@@ -18,22 +17,29 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
     {
         var documentCreated = documentService.Create(creationDocument);
         return Ok(
-                _documentMapper.Map(documentCreated)
-            );
+            _documentMapper.Map(documentCreated)
+        );
     }
 
     [HttpGet]
     [Route("/documents/{id}")]
     public ActionResult<DocumentResponse> Find(string id)
     {
-
-        var document = documentService.Find(id);
-        if (document == null)
+        try
         {
-            return NotFound("Element not found");
-        }
+            var document = documentService.Find(id);
 
-        return Ok(_documentMapper.Map(document));
+            if (document == null)
+            {
+                return NotFound("Element not found");
+            }
+
+            return Ok(_documentMapper.Map(document));
+        }
+        catch (FormatException e)
+        {
+            return BadRequest("The uuid format is not valid");
+        }
     }
 
     [HttpPatch]
@@ -47,13 +53,19 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
     [Route("/documents/{id}")]
     public ActionResult<DocumentResponse> Delete(string id)
     {
-        var document = documentService.Delete(id);
-        if (document == null)
+        try
         {
-            return NotFound("Element not found");
-        }
+            var document = documentService.Delete(id);
+            if (document == null)
+            {
+                return NotFound("Element not found");
+            }
 
-        return Ok(_documentMapper.Map(document));
+            return Ok(_documentMapper.Map(document));
+        }
+        catch (FormatException e)
+        {
+            return BadRequest("The uuid format is not valid");
+        }
     }
-    
 }

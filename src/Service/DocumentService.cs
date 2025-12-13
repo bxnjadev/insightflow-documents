@@ -1,4 +1,5 @@
-﻿using insightflow_documents.Model;
+﻿using System.Text.Json;
+using insightflow_documents.Model;
 
 namespace insightflow_documents.Service;
 
@@ -9,7 +10,17 @@ public class DocumentService : IDocumentService
     
     public Document Create(CreationDocument creationDocument)
     {
-        throw new NotImplementedException();
+        var document = new Document
+        {
+            Uuid = Guid.NewGuid(),
+            Title = creationDocument.Title,
+            Content = new JsonElement(),
+            Icon = creationDocument.Icon,
+            WorkspaceId = creationDocument.WorkspaceId
+        };
+        
+        _documents.Add(document);
+        return document;
     }
 
     public Document? Find(string uuid)
