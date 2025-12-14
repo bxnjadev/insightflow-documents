@@ -1,0 +1,20 @@
+﻿using System.Text.Json;
+
+namespace insightflow_documents.Model;
+
+public class DocumentResponse
+{
+
+    public Guid Uuid { get; set; }
+    
+    public string Title { get; set; } = string.Empty;
+
+    public string Icon { get; set; } = string.Empty;
+
+    public String Content { get; set; }
+
+    public Guid WorkspaceId { get; set; } 
+
+    public bool IsDeleted { get; set; }
+
+}
