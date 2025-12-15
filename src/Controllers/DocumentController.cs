@@ -12,15 +12,30 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
 {
     private readonly DocumentMapper _documentMapper = new DocumentMapper();
 
+    /**
+     * Post a new document from http request
+     */
+    
     [HttpPost]
     [Route("/documents")]
     public ActionResult<DocumentResponse> Post([FromBody] CreationDocument creationDocument)
     {
-        var documentCreated = documentService.Create(creationDocument);
-        return Ok(
-            _documentMapper.Map(documentCreated)
-        );
+        try
+        {
+            var documentCreated = documentService.Create(creationDocument);
+            return Ok(
+                _documentMapper.Map(documentCreated)
+            );
+        }
+        catch (FormatException e)
+        {
+            return BadRequest("The uuid format is not vlaid");
+        }
     }
+    
+    /**
+     * Find by uuid the document
+     */
 
     [HttpGet]
     [Route("/documents/{id}")]
@@ -42,8 +57,12 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
             return BadRequest("The uuid format is not valid");
         }
     }
+    
+    /**
+     * Edit a document from her uuiid
+     */
 
-    [HttpPatch]
+    [HttpPut]
     [Route("/documents/{id}")]
     public ActionResult<DocumentResponse> Edit(string id,
         EditDocument editDocument)
@@ -75,6 +94,10 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
         
     }
 
+    /**
+     * Delete a document from uud
+     */
+    
     [HttpDelete]
     [Route("/documents/{id}")]
     public ActionResult<DocumentResponse> Delete(string id)

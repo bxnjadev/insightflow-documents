@@ -8,6 +8,6 @@ public class CreationDocument
 
     public string Icon { get; set; } = string.Empty;
     
-    public Guid WorkspaceId { get; set; }
+    public string WorkspaceId { get; set; }
 
 }
