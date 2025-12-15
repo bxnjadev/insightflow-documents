@@ -56,3 +56,7 @@ dotnet run
 - Se ofrece un .env de con datos de ejemplo
 - Se utiliza el Framework .NET de C#
 - Se utiliza la ruta "http://localhost:5035" para realizar las peticiones HTTP
+
+## Enlace de Render
+A continuación, se comparto el enlace del proyecto desplegado en Render
+https://insightflow-documents-aivp.onrender.com
