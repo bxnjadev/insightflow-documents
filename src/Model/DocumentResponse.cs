@@ -13,7 +13,7 @@ public class DocumentResponse
 
     public String Content { get; set; }
 
-    public Guid WorkspaceId { get; set; } 
+    public string WorkspaceId { get; set; } 
 
     public bool IsDeleted { get; set; }
 

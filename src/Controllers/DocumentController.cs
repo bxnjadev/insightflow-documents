@@ -16,10 +16,17 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
     [Route("/documents")]
     public ActionResult<DocumentResponse> Post([FromBody] CreationDocument creationDocument)
     {
-        var documentCreated = documentService.Create(creationDocument);
-        return Ok(
-            _documentMapper.Map(documentCreated)
-        );
+        try
+        {
+            var documentCreated = documentService.Create(creationDocument);
+            return Ok(
+                _documentMapper.Map(documentCreated)
+            );
+        }
+        catch (FormatException e)
+        {
+            return BadRequest("The uuid format is not vlaid");
+        }
     }
 
     [HttpGet]
@@ -43,7 +50,7 @@ public class DocumentController(IDocumentService documentService) : ControllerBa
         }
     }
 
-    [HttpPatch]
+    [HttpPut]
     [Route("/documents/{id}")]
     public ActionResult<DocumentResponse> Edit(string id,
         EditDocument editDocument)

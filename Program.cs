@@ -1,5 +1,7 @@
 using insightflow_documents.Service;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -7,14 +9,14 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll", policy =>
     {
         policy
-            .AllowAnyOrigin()
+            .SetIsOriginAllowed(_ => true) // 
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .WithExposedHeaders("*");
     });
 });
 
 builder.Services.AddOpenApi();
-
 builder.Services.AddSingleton<IDocumentService, DocumentService>();
 builder.Services.AddControllers();
 
@@ -27,6 +29,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); 
 app.MapControllers();
+
 app.Run();

@@ -1,15 +1,17 @@
 ﻿using System.Text.Json;
 using insightflow_documents.Model;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace insightflow_documents.Service;
 
 public class DocumentService : IDocumentService
 {
-
     private readonly List<Document> _documents = new List<Document>();
-    
+
     public Document Create(CreationDocument creationDocument)
     {
+
+        var guid = new Guid(creationDocument.WorkspaceId);
         var document = new Document
         {
             Uuid = Guid.NewGuid(),
@@ -18,7 +20,7 @@ public class DocumentService : IDocumentService
             Icon = creationDocument.Icon,
             WorkspaceId = creationDocument.WorkspaceId
         };
-        
+
         _documents.Add(document);
         return document;
     }
@@ -26,11 +28,16 @@ public class DocumentService : IDocumentService
     public Document? Find(string uuid)
     {
         var guid = new Guid(uuid);
-        
-        foreach(var document in _documents)
+
+        foreach (var document in _documents)
         {
-            if (document.Uuid == guid)
+            if (document.Uuid.ToString() == guid.ToString())
             {
+                if (document.IsDeleted)
+                {
+                    return null;
+                }
+                
                 return document;
             }
         }
@@ -63,5 +70,4 @@ public class DocumentService : IDocumentService
         document.Title = editDocument.Title;
         return document;
     }
-    
 }
